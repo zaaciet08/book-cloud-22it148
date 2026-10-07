@@ -1,0 +1,60 @@
+<h2 class="mb-4 text-primary">Hệ Thống Quản Lý Sách (Stateless Cloud Architecture)</h2>
+
+{{#if error}}
+  <div class="alert alert-danger">{{error}}</div>
+{{/if}}
+
+{{#if success}}
+  <div class="alert alert-success">{{success}}</div>
+{{/if}}
+
+<div class="card p-3 mb-4">
+  <h5 class="card-title">Thêm Sách Mới (Ghi qua Write Connection)</h5>
+  <form action="/books" method="POST">
+    <div class="row g-3">
+      <div class="col-md-3">
+        <label class="form-label">Mã sách (Bắt buộc tiền tố <strong>{{prefix}}</strong>):</label>
+        <input type="text" name="bookCode" class="form-control" placeholder="{{prefix}}-01" required>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Tên sách:</label>
+        <input type="text" name="title" class="form-control" required>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Giá gốc (VNĐ):</label>
+        <input type="number" name="basePrice" class="form-control" required min="1000">
+      </div>
+      <div class="col-md-2 d-flex align-items-end">
+        <button type="submit" class="btn btn-success w-100">Lưu Sách</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<h5>Danh Sách Sách (Đọc qua Read Connection)</h5>
+<table class="table table-bordered table-striped mt-3 align-middle">
+  <thead class="table-dark">
+    <tr>
+      <th>Mã Sách</th>
+      <th>Tên Sách</th>
+      <th>Giá Gốc (VNĐ)</th>
+      <th>VAT</th>
+      <th>Giá Sau Thuế (VNĐ)</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each books}}
+    <tr>
+      <td><span class="badge bg-secondary">{{this.bookCode}}</span></td>
+      <td>{{this.title}}</td>
+      <td>{{this.basePrice}}</td>
+      <td>{{this.vat}}%</td>
+      <td class="text-danger fw-bold">{{this.finalPrice}}</td>
+    </tr>
+    {{else}}
+    <tr>
+      <td colspan="5" class="text-center text-muted">Chưa có dữ liệu sách nào</td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
