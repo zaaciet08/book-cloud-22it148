@@ -2,7 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const { engine } = require('express-handlebars');
 const session = require('express-session');
-const MongoStore = require('connect-mongo');
+const ConnectMongo = require('connect-mongo');
+const MongoStore = ConnectMongo.create ? ConnectMongo : ConnectMongo.default;
 const { BookReadModel, BookWriteModel } = require('./db');
 
 const app = express();
@@ -15,7 +16,7 @@ app.engine('hbs', engine({ extname: '.hbs' }));
 app.set('view engine', 'hbs');
 app.set('views', './views');
 
-// Stateless Session lưu trữ trực tiếp xuống MongoDB Atlas (Cluster)
+// Cấu hình Stateless Session lưu trữ trực tiếp xuống MongoDB Atlas (Cluster)
 app.use(session({
   secret: process.env.SESSION_SECRET || 'secret_22it148',
   resave: false,
